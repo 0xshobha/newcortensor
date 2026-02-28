@@ -19,9 +19,9 @@ export function EvidenceExplorer() {
             .then((r) => r.json())
             .then((data) => {
                 // Fetch evidence for each task
-                const taskIds = [
-                    ...new Set((data.tasks || []).map((t: { id: string }) => t.id)),
-                ].slice(0, 10);
+                const taskIds = Array.from<string>(
+                    new Set((data.tasks || []).map((t: { id: string }) => t.id))
+                ).slice(0, 10);
                 return Promise.all(
                     taskIds.map((id: string) =>
                         fetch(`/api/evidence/${id}`)
@@ -119,10 +119,10 @@ export function EvidenceExplorer() {
                             </span>
                             <span
                                 className={`text-sm font-mono font-bold ${bundle.overallScore >= 80
-                                        ? "text-primary"
-                                        : bundle.overallScore >= 60
-                                            ? "text-warning"
-                                            : "text-danger"
+                                    ? "text-primary"
+                                    : bundle.overallScore >= 60
+                                        ? "text-warning"
+                                        : "text-danger"
                                     }`}
                             >
                                 {bundle.overallScore}/100

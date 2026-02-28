@@ -186,19 +186,20 @@ function buildGraph() {
     graph.addNode("reporter", reporterNode);
 
     // START → coordinator
-    graph.addEdge(START, "coordinator");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    graph.addEdge(START, "coordinator" as any);
 
     // coordinator → either END (if refused/error) or fan-out
     graph.addConditionalEdges(
-        "coordinator",
+        "coordinator" as any,
         (state: GraphStateType): string => (state.refused || state.error ? "end" : "fanOut"),
-        { end: END, fanOut: "fanOut" }
+        { end: END, fanOut: "fanOut" } as any
     );
 
     // fanOut → verifier → reporter → END
-    graph.addEdge("fanOut", "verifier");
-    graph.addEdge("verifier", "reporter");
-    graph.addEdge("reporter", END as unknown as string);
+    graph.addEdge("fanOut" as any, "verifier" as any);
+    graph.addEdge("verifier" as any, "reporter" as any);
+    graph.addEdge("reporter" as any, END);
 
     return graph.compile();
 }

@@ -34,9 +34,9 @@ export function buildEvidenceBundle(params: {
     finalAggregatedOutput: string;
     evidenceList: CortensorEvidence[];
 }): EvidenceBundle {
-    const sessionIds = [
-        ...new Set(params.evidenceList.map((e) => e.sessionId)),
-    ];
+    const sessionIds = Array.from(
+        new Set(params.evidenceList.map((e) => e.sessionId))
+    );
 
     const overallScore =
         params.rubricScores.length > 0

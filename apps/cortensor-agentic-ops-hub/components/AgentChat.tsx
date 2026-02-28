@@ -195,7 +195,7 @@ export function AgentChat() {
                 {logs.map((log, i) => (
                     <div key={i} className={`flex gap-3 animate-fade-in ${getLogStyle(log.type)}`}>
                         <span className="text-muted text-[10px] shrink-0 mt-0.5 tabular-nums w-16">
-                            {log.timestamp.split("T")[1].split(".")[0]}
+                            {log.timestamp ? log.timestamp.split("T")[1]?.split(".")[0] : "--:--:--"}
                         </span>
                         <span className="leading-relaxed whitespace-pre-wrap break-words flex-1">
                             {log.text}
