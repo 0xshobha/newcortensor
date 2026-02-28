@@ -17,7 +17,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className="dark">
+        <html lang="en" className="dark" suppressHydrationWarning>
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link
@@ -26,7 +26,7 @@ export default function RootLayout({
                     crossOrigin="anonymous"
                 />
             </head>
-            <body className="bg-background text-text-primary h-screen flex flex-col overflow-hidden">
+            <body className="bg-background text-text-primary h-screen flex flex-col overflow-hidden" suppressHydrationWarning>
                 {/* Animated scanline */}
                 <div className="scanline" />
 
