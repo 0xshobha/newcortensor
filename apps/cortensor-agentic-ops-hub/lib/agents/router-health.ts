@@ -41,7 +41,12 @@ async function fetchRouterStatus(): Promise<RouterStatus> {
     const routerUrl = process.env.CORTENSOR_ROUTER_URL || "http://localhost:5010";
     const authToken = process.env.CORTENSOR_AUTH_TOKEN || "default-dev-token";
 
-    if (process.env.MOCK_CORTENSOR === "true") {
+    // Auto-detect mock mode: explicit env var OR on Vercel without real router
+    const isMockMode =
+        process.env.MOCK_CORTENSOR === "true" ||
+        (process.env.VERCEL === "1" && !process.env.CORTENSOR_ROUTER_URL);
+
+    if (isMockMode) {
         const activeMiners = 10;
         const minerCount = 12;
         return {

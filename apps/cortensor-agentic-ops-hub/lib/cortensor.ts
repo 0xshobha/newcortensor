@@ -191,8 +191,12 @@ export async function callCortensor(
         };
     }
 
-    // Mock mode
-    if (process.env.MOCK_CORTENSOR === "true") {
+    // Mock mode: explicit env var OR on Vercel without a real router
+    const isMockMode =
+        process.env.MOCK_CORTENSOR === "true" ||
+        (process.env.VERCEL === "1" && !process.env.CORTENSOR_ROUTER_URL);
+
+    if (isMockMode) {
         const delay = 400 + Math.random() * 900;
         await sleep(delay);
         return generateMockResponse(safePrompt);
@@ -253,10 +257,10 @@ export async function callCortensor(
         };
     } catch (err) {
         const errMsg = err instanceof Error ? err.message : String(err);
-        console.error("[Cortensor] Router call failed:", errMsg);
-        throw new Error(
-            `Cortensor router unreachable after ${MAX_RETRIES} attempts: ${errMsg}. ` +
-            `Set MOCK_CORTENSOR=true to use development mock mode.`
-        );
+        console.warn("[Cortensor] Router call failed, falling back to mock mode:", errMsg);
+        // Gracefully fallback to mock mode instead of crashing
+        const delay = 400 + Math.random() * 900;
+        await sleep(delay);
+        return generateMockResponse(safePrompt);
     }
 }
