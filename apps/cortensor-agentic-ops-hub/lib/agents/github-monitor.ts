@@ -104,8 +104,13 @@ async function fetchGitHubData(org: string): Promise<{
 }> {
     const token = process.env.GITHUB_TOKEN;
 
-    // Mock mode or no token
-    if (process.env.MOCK_CORTENSOR === "true" || !token) {
+    // Mock mode: explicit env var, on Vercel without real router, or no token
+    const isMockMode =
+        process.env.MOCK_CORTENSOR === "true" ||
+        (process.env.VERCEL === "1" && !process.env.CORTENSOR_ROUTER_URL) ||
+        !token;
+
+    if (isMockMode) {
         return {
             prs: [
                 {
