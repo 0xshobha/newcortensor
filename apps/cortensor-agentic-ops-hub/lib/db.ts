@@ -32,6 +32,12 @@ function getDb() {
         return null;
     }
 
+    // Skip SQLite on Vercel — filesystem is read-only
+    if (process.env.VERCEL === "1") {
+        dbAvailable = false;
+        return null;
+    }
+
     try {
         // Ensure data directory exists
         if (!fs.existsSync(DATA_DIR)) {
